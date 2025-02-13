@@ -11,9 +11,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Creăm un utilizator static pentru autentificare (poți extinde acest serviciu pentru a obține utilizatori din baza de date)
         if ("admin".equals(username)) {
-            return new User("admin", "{noop}admin"); // {noop} înseamnă că parola nu este criptată
+            return new User("admin", "{noop}admin");
         }
         throw new UsernameNotFoundException("User not found");
     }
