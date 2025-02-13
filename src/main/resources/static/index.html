@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Catalog</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+    <h1>Virtual Catalog</h1>
+    <nav>
+        <button id="view-students-btn">View Students</button>
+        <button id="add-student-btn">Add Student</button>
+        <button id="view-courses-btn">View Courses</button>
+        <button id="add-course-btn">Add Course</button>
+        <button id="view-professors-btn">View Professors</button>
+        <button id="add-professor-btn">Add Professor</button>
+    </nav>
+</header>
+
+<div id="content">
+    <h2>Students</h2>
+    <table id="students-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- List of students will be dynamically populated here -->
+        </tbody>
+    </table>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
