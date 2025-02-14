@@ -8,14 +8,14 @@ public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
+
     private String firstName;
     private String lastName;
     private String email;
     private String password;
     private int studyYear;
-    private String group;
+    private String subgroup;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -35,7 +35,7 @@ public class Student {
     public int getStudyYear() { return studyYear; }
     public void setStudyYear(int studyYear) { this.studyYear = studyYear; }
 
-    public String getGroup() { return group; }
-    public void setGroup(String group) { this.group = group; }
+    public String getSubgroup() { return subgroup; }
+    public void setSubgroup(String subgroup) { this.subgroup = subgroup; }
 
 }

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Darumadrop+One&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -9,24 +11,43 @@ body {
     background-color: #f4f4f4;
 }
 
+/* Header */
 header {
-    background-color: #333;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #22223B;
     color: white;
     padding: 10px;
     text-align: center;
 }
 
+header h1 {
+    font-size: 50px;
+    font-family: "Darumadrop One", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Navigation Buttons */
 nav button {
-    background-color: #555;
-    color: white;
+    background-color: #F2E9E4;
+    color: #22223B;
     border: none;
     padding: 10px 20px;
     margin: 5px;
     cursor: pointer;
+    border-radius: 30px;
+    font-family: "Rubik", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 nav button:hover {
-    background-color: #888;
+    background-color: #4A4E69;
+    color: white;
+    transform: scale(1.05);
 }
 
 #content {
@@ -39,13 +60,170 @@ table {
     margin-top: 20px;
 }
 
-th, td {
+th,
+td {
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #F2E9E4;
     text-align: left;
 }
 
 th {
-    background-color: #333;
+    background-color: #4A4E69;
+    color: #F2E9E4;
+}
+
+tbody tr {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.4s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+    position: relative;
+    transform: scale(0.8);
+    animation: scaleUp 0.3s ease-in-out forwards;
+}
+
+.modal-content input,
+.modal-content button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+}
+
+.close-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleUp {
+    from {
+        transform: scale(0.8);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+#students-content,
+#professors-content,
+#courses-content {
+    display: none;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    width: 80%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.5s ease-out;
+}
+
+#students-content,
+#professors-content,
+#courses-content h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #4A4E69;
+}
+
+#students-table,
+#professors-table,
+#courses-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#students-table th,
+#students-table td,
+#professors-table th,
+#professors-table td,
+#courses-table th,
+#courses-table td {
+    padding: 12px;
+    border: 1px solid #F2E9E4;
+    text-align: left;
+}
+
+#students-table th,
+#professors-table th,
+#courses-table th {
+    background-color: #4A4E69;
+    color: #F2E9E4;
+}
+
+#students-content button,
+#professors-content button,
+#courses-table button {
+    background-color: #4A4E69;
     color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 30px;
+    font-family: "Rubik", serif;
+}
+
+#students-content button:hover,
+#professors-content button:hover,
+#courses-content button:hover {
+    background-color: #22223B;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
