@@ -1,29 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
     const viewStudentsBtn = document.getElementById('show-students-btn');
-    const studentsTable = document.getElementById('students-table').getElementsByTagName('tbody')[0];
+    const studentsTable = document.getElementById('students-table')?.getElementsByTagName('tbody')[0];
     const addStudentBtn = document.getElementById('add-student-btn');
     const studentModal = document.getElementById('student-modal');
-    const closeModalBtn = document.querySelector('.close-btn');
+    const closeModalBtn = studentModal?.querySelector('.close-btn');
     const studentForm = document.getElementById('student-form');
     const studentsContent = document.getElementById('students-content');
+
+    // Modal pentru confirmare ștergere
+    const confirmModal = document.createElement('div');
+    confirmModal.classList.add('modal');
+    confirmModal.innerHTML = `
+        <div class="modal-content">
+            <h2 id="confirm-text"></h2>
+            <button id="confirm-delete" class="modern-button">Confirmă</button>
+            <button id="cancel-delete" class="modern-button">Anulează</button>
+        </div>`;
+    document.body.appendChild(confirmModal);
 
     function loadStudents() {
         fetch('/api/students')
             .then(response => response.json())
             .then(data => {
+                if (!studentsTable) return;
                 studentsTable.innerHTML = '';
-
                 data.forEach((student, index) => {
                     const row = studentsTable.insertRow();
                     row.innerHTML = `
                         <td>${student.id}</td>
                         <td>${student.firstName} ${student.lastName}</td>
                         <td>${student.email}</td>
-                        <td>
-                            <button class="delete-btn" data-id="${student.id}">Delete</button>
-                        </td>
+                        <td><button class="delete-btn" data-id="${student.id}" data-name="${student.firstName} ${student.lastName}">Șterge</button></td>
                     `;
-
                     row.style.opacity = "0";
                     row.style.transform = "translateY(20px)";
                     setTimeout(() => {
@@ -31,91 +39,101 @@ document.addEventListener('DOMContentLoaded', () => {
                         row.style.transform = "translateY(0)";
                     }, index * 100);
                 });
-
                 document.querySelectorAll('.delete-btn').forEach(button => {
-                    button.addEventListener('click', () => {
+                    button.addEventListener('click', (e) => {
                         const id = button.getAttribute('data-id');
-                        deleteStudent(id);
+                        const name = button.getAttribute('data-name');
+                        showConfirmModal(id, name);
                     });
                 });
             })
-            .catch(error => {
-                console.error('Error fetching students:', error);
-                alert('Failed to load students. Please try again later.');
-            });
+            .catch(error => console.error('Eroare la încărcarea studenților:', error));
     }
 
-    viewStudentsBtn.addEventListener('click', () => {
-        if (studentsContent.style.display === 'none') {
-            studentsContent.style.display = 'block';
-            loadStudents();
-        } else {
-            studentsContent.style.display = 'none';
+    function showConfirmModal(id, name) {
+        if (!name) {
+            console.error("Numele studentului este invalid sau lipsă!");
+            return;
         }
-    });
+        document.getElementById('confirm-text').innerText = `Ești sigur că vrei să-l ștergi pe studentul ${name}?`;
+        confirmModal.style.display = 'flex';
+
+        const confirmBtn = document.getElementById('confirm-delete');
+        confirmBtn.replaceWith(confirmBtn.cloneNode(true));
+        document.getElementById('confirm-delete').addEventListener("click", () => {
+            deleteStudent(id);
+            confirmModal.style.display = 'none';
+        });
+
+        document.getElementById('cancel-delete').onclick = () => {
+            confirmModal.style.display = 'none';
+        };
+    }
 
     function deleteStudent(id) {
-        if (confirm('Are you sure you want to delete this student?')) {
-            fetch(`/api/students/${id}`, { method: 'DELETE' })
-                .then(response => {
-                    if (!response.ok) throw new Error('Failed to delete student');
-                    return response.json();
-                })
-                .then(() => {
-                    alert('Student deleted successfully!');
-                    loadStudents();
-                })
-                .catch(error => {
-                    console.error('Error deleting student:', error);
-                    alert('Failed to delete student.');
-                });
-        }
+        fetch(`/api/students/${id}`, { method: 'DELETE' })
+            .then(response => {
+                if (!response.ok) throw new Error('Eșec la ștergere');
+                return response.json();
+            })
+            .then(() => {
+                setTimeout(loadStudents, 300);
+            })
+            .catch(error => console.error('Eroare la ștergere:', error));
     }
 
-    addStudentBtn.addEventListener('click', () => {
+    viewStudentsBtn?.addEventListener('click', () => {
+        if (!studentsContent) return;
+        studentsContent.style.display = studentsContent.style.display === 'none' ? 'block' : 'none';
+        if (studentsContent.style.display === 'block') loadStudents();
+    });
+
+    addStudentBtn?.addEventListener('click', () => {
         studentModal.style.display = 'flex';
     });
 
-    closeModalBtn.addEventListener('click', () => {
+    closeModalBtn?.addEventListener('click', () => {
         studentModal.style.display = 'none';
     });
 
-    studentForm.addEventListener('submit', (event) => {
+    window.addEventListener('click', (event) => {
+        if (event.target === studentModal) studentModal.style.display = 'none';
+    });
+
+    studentForm?.addEventListener('submit', (event) => {
         event.preventDefault();
-
-        const firstName = document.getElementById('firstName').value.trim();
-        const lastName = document.getElementById('lastName').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
-        const studyYear = document.getElementById('studyYear').value.trim();
-        const subgroup = document.getElementById('subgroup').value.trim();
-
-        if (!firstName || !lastName || !email || !password || !studyYear || !subgroup) {
-            alert("All fields are required!");
-            return;
-        }
-
+        const fields = [
+            'firstName', 'lastName', 'email', 'password', 'studyYear', 'subgroup'
+        ];
+        let isValid = true;
+        fields.forEach(field => {
+            const input = document.getElementById(field);
+            if (input?.value.trim() === '') {
+                input.style.border = '2px solid red';
+                isValid = false;
+            } else {
+                input.style.border = '';
+            }
+        });
+        if (!isValid) return;
         fetch('/api/students', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                firstName,
-                lastName,
-                email,
-                password,
-                studyYear: parseInt(studyYear),
-                subgroup
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                password: document.getElementById('password').value,
+                studyYear: parseInt(document.getElementById('studyYear').value.trim()),
+                subgroup: document.getElementById('subgroup').value.trim()
             })
         })
             .then(response => response.json())
-            .then(data => {
+            .then(() => {
                 studentModal.style.display = 'none';
                 studentForm.reset();
-                loadStudents();
+                setTimeout(loadStudents, 300);
             })
-            .catch(error => {
-                console.error('Error adding student:', error);
-                alert('Failed to add student.');
-            });
+            .catch(error => console.error('Eroare la adăugare student:', error));
     });
 });

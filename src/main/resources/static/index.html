@@ -4,104 +4,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/images/cltg.png">
+
     <title>Virtual Catalog</title>
+
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
-<header>
-    <h1>Virtual Catalog</h1>
-    <nav>
-        <button id="show-students-btn">Show Students</button>
-        <button id="add-student-btn">Add Student</button>
-        <button id="view-courses-btn">View Courses</button>
-        <button id="add-course-btn">Add Course</button>
-        <button id="view-professors-btn">View Professors</button>
-        <button id="add-professor-btn">Add Professor</button>
-    </nav>
-</header>
+    <header>
+        <h1 class="modern-title">Virtual Catalog</h1>
+        <nav>
+            <button id="show-students-btn" class="modern-button">Show Students</button>
+            <button id="add-student-btn" class="modern-button">Add Student</button>
+            <button id="view-courses-btn" class="modern-button">View Courses</button>
+            <button id="add-course-btn" class="modern-button">Add Course</button>
+            <button id="view-professors-btn" class="modern-button">View Professors</button>
+            <button id="add-professor-btn" class="modern-button">Add Professor</button>
+        </nav>
+    </header>
 
-<div id="content">
-    <!-- Students Section -->
-    <div id="students-content" style="display: none;">
-        <h2>Students</h2>
-        <table id="students-table">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Delete</th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+    <div id="content">
+        <!-- Students Section -->
+        <div id="students-content" style="display: none;">
+            <h2>Students</h2>
+            <table id="students-table" class="modern-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Courses Section -->
+        <div id="courses-content" style="display: none;">
+            <h2>Courses</h2>
+            <table id="courses-table" class="modern-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Credits</th>
+                        <th>Professor</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Course Modal -->
+        <div id="course-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Add Course</h2>
+                <form id="course-form">
+                    <input type="text" id="courseName" placeholder="Course Name" required>
+                    <input type="number" id="courseCredits" placeholder="Credits" required>
+                    <input type="number" id="courseTeacher" placeholder="Professor ID" required>
+                    <button type="submit" class="modern-button">Add Course</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Professors Section -->
+        <div id="professors-content" style="display: none;">
+            <h2>Professors</h2>
+            <table id="professors-table" class="modern-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Professor Modal -->
+        <div id="professor-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Add Professor</h2>
+                <form id="professor-form">
+                    <input type="text" id="professorName" placeholder="Professor Name" required>
+                    <input type="email" id="professorEmail" placeholder="Email" required>
+                    <button type="submit" class="modern-button">Add Professor</button>
+                </form>
+            </div>
+        </div>
     </div>
-
-    <!-- Courses Section -->
-    <div id="courses-content" style="display: none;">
-        <h2>Courses</h2>
-        <table id="courses-table">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Credits</th>
-                <th>Professor</th>
-                <th>Delete</th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
-
-    <!-- Course Modal -->
-    <div id="course-modal" class="modal">
+    <!-- Student Modal -->
+    <div id="student-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn">&times;</span>
-            <h2>Add Course</h2>
-            <form id="course-form">
-                <input type="text" id="courseName" placeholder="Course Name" required>
-                <input type="number" id="courseCredits" placeholder="Credits" required>
-                <input type="number" id="courseTeacher" placeholder="Professor ID" required>
-                <button type="submit">Add Course</button>
+            <h2>Add Student</h2>
+            <form id="student-form">
+                <input type="text" id="firstName" placeholder="First Name" required>
+                <input type="text" id="lastName" placeholder="Last Name" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <input type="number" id="studyYear" placeholder="Study Year" required>
+                <input type="text" id="subgroup" placeholder="Subgroup" required>
+                <button type="submit" class="modern-button">Add Student</button>
             </form>
         </div>
     </div>
 
-    <!-- Professors Section -->
-    <div id="professors-content" style="display: none;">
-        <h2>Professors</h2>
-        <table id="professors-table">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Delete</th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
 
-    <!-- Professor Modal -->
-    <div id="professor-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2>Add Professor</h2>
-            <form id="professor-form">
-                <input type="text" id="professorName" placeholder="Professor Name" required>
-                <input type="email" id="professorEmail" placeholder="Email" required>
-                <button type="submit">Add Professor</button>
-            </form>
-        </div>
-    </div>
-</div>
-
-<script src="js/student.js"></script>
-<script src="js/course.js"></script>
-<script src="js/professor.js"></script>
+    <script src="js/student.js"></script>
+    <script src="js/course.js"></script>
+    <script src="js/professor.js"></script>
 </body>
 
 </html>

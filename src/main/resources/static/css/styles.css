@@ -7,7 +7,7 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Rubik", sans-serif;
     background-color: #f4f4f4;
 }
 
@@ -18,76 +18,95 @@ header {
     gap: 20px;
     background-color: #22223B;
     color: white;
-    padding: 10px;
+    padding: 15px;
     text-align: center;
 }
 
-header h1 {
-    font-size: 50px;
+header h1.modern-title {
+    font-size: 40px;
     font-family: "Darumadrop One", serif;
     font-weight: 400;
-    font-style: normal;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Navigation Buttons */
-nav button {
+.modern-button {
     background-color: #F2E9E4;
     color: #22223B;
     border: none;
-    padding: 10px 20px;
+    padding: 8px 18px;
     margin: 5px;
     cursor: pointer;
-    border-radius: 30px;
-    font-family: "Rubik", serif;
-    font-optical-sizing: auto;
-    font-style: normal;
+    border-radius: 20px;
+    font-family: "Rubik", sans-serif;
     transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-nav button:hover {
+.modern-button:hover {
     background-color: #4A4E69;
     color: white;
-    transform: scale(1.05);
+    transform: scale(1.08);
 }
 
 #content {
     padding: 20px;
 }
 
-table {
+.modern-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 15px;
+    font-size: 14px;
 }
 
-th,
-td {
-    padding: 10px;
+.modern-table th,
+.modern-table td {
+    padding: 8px;
     border: 1px solid #F2E9E4;
     text-align: left;
 }
 
-th {
+.modern-table th {
     background-color: #4A4E69;
     color: #F2E9E4;
 }
 
 tbody tr {
     opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 0.4s ease forwards;
+    transform: translateY(15px);
+    animation: fadeInUp 0.3s ease forwards;
 }
 
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(15px);
     }
 
     to {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.delete-btn {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.delete-btn:hover {
+    background-color: #c9302c;
+}
+
+.delete-btn:active {
+    transform: scale(0.95);
 }
 
 .modal {
@@ -98,7 +117,8 @@ tbody tr {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(6px);
     justify-content: center;
     align-items: center;
     animation: fadeIn 0.3s ease-in-out;
@@ -106,29 +126,66 @@ tbody tr {
 
 .modal-content {
     background: white;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 25px;
+    border-radius: 12px;
+    width: 350px;
     text-align: center;
-    width: 300px;
-    position: relative;
-    transform: scale(0.8);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transform: scale(0.9);
     animation: scaleUp 0.3s ease-in-out forwards;
 }
 
-.modal-content input,
-.modal-content button {
-    display: block;
+.modal-content h2 {
+    font-size: 22px;
+    color: #4A4E69;
+    margin-bottom: 15px;
+}
+
+.modal-content input {
     width: 100%;
-    margin: 10px 0;
-    padding: 8px;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.modal-content input:focus {
+    outline: none;
+    border-color: #4A4E69;
+    box-shadow: 0 0 5px rgba(74, 78, 105, 0.5);
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #4A4E69;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.modal-content button:hover {
+    background-color: #22223B;
+    transform: scale(1.05);
 }
 
 .close-btn {
     position: absolute;
-    right: 10px;
-    top: 10px;
-    cursor: pointer;
+    right: 15px;
+    top: 15px;
     font-size: 20px;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+    color: #22223B;
 }
 
 @keyframes fadeIn {
@@ -143,7 +200,7 @@ tbody tr {
 
 @keyframes scaleUp {
     from {
-        transform: scale(0.8);
+        transform: scale(0.9);
     }
 
     to {
@@ -156,70 +213,18 @@ tbody tr {
 #courses-content {
     display: none;
     margin: 20px auto;
-    padding: 20px;
+    padding: 15px;
     background-color: #ffffff;
     border-radius: 10px;
-    width: 80%;
+    width: 85%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    animation: slideIn 0.5s ease-out;
-}
-
-#students-content,
-#professors-content,
-#courses-content h2 {
-    font-size: 24px;
-    margin-bottom: 15px;
-    color: #4A4E69;
-}
-
-#students-table,
-#professors-table,
-#courses-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-#students-table th,
-#students-table td,
-#professors-table th,
-#professors-table td,
-#courses-table th,
-#courses-table td {
-    padding: 12px;
-    border: 1px solid #F2E9E4;
-    text-align: left;
-}
-
-#students-table th,
-#professors-table th,
-#courses-table th {
-    background-color: #4A4E69;
-    color: #F2E9E4;
-}
-
-#students-content button,
-#professors-content button,
-#courses-table button {
-    background-color: #4A4E69;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    cursor: pointer;
-    border-radius: 30px;
-    font-family: "Rubik", serif;
-}
-
-#students-content button:hover,
-#professors-content button:hover,
-#courses-content button:hover {
-    background-color: #22223B;
+    animation: slideIn 0.4s ease-out;
 }
 
 @keyframes slideIn {
     from {
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translateY(-15px);
     }
 
     to {

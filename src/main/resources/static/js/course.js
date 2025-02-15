@@ -6,6 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeCourseModalBtn = document.querySelector('#course-modal .close-btn');
     const courseForm = document.getElementById('course-form');
     const coursesContent = document.getElementById('courses-content');
+    const confirmModal = document.createElement('div');
+    confirmModal.classList.add('modal');
+    confirmModal.innerHTML = `
+        <div class="modal-content">
+            <h2 id="confirm-text"></h2>
+            <button id="confirm-delete" class="modern-button">Confirmă</button>
+            <button id="cancel-delete" class="modern-button">Anulează</button>
+        </div>`;
+    document.body.appendChild(confirmModal);
 
     function loadCourses() {
         fetch('/api/courses')
@@ -19,31 +28,48 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td>${course.name}</td>
                         <td>${course.credits}</td>
                         <td>${course.teacher ? course.teacher.name : 'N/A'}</td>
-                        <td><button class="delete-btn" data-id="${course.id}">Delete</button></td>
+                        <td><button class="delete-btn" data-id="${course.id}" data-name="${course.name}">Șterge</button></td>
                     `;
                 });
-
                 document.querySelectorAll('.delete-btn').forEach(button => {
                     button.addEventListener('click', () => {
-                        deleteCourse(button.getAttribute('data-id'));
+                        const id = button.getAttribute('data-id');
+                        const name = button.getAttribute('data-name');
+                        showConfirmModal(id, name);
                     });
                 });
             })
-            .catch(() => alert('Failed to load courses.'));
+            .catch(error => console.error('Eroare la încărcarea cursurilor:', error));
+    }
+
+    function showConfirmModal(id, name) {
+        document.getElementById('confirm-text').innerText = `Ești sigur că vrei să ștergi cursul ${name}?`;
+        confirmModal.style.display = 'flex';
+        document.getElementById('confirm-delete').onclick = () => {
+            deleteCourse(id);
+            confirmModal.style.display = 'none';
+        };
+        document.getElementById('cancel-delete').onclick = () => {
+            confirmModal.style.display = 'none';
+        };
+    }
+
+    function deleteCourse(id) {
+        fetch(`/api/courses/${id}`, { method: 'DELETE' })
+            .then(response => {
+                if (!response.ok) throw new Error('Eșec la ștergere');
+                return response.json();
+            })
+            .then(() => {
+                setTimeout(loadCourses, 300);
+            })
+            .catch(error => console.error('Eroare la ștergere:', error));
     }
 
     viewCoursesBtn.addEventListener('click', () => {
         coursesContent.style.display = coursesContent.style.display === 'none' ? 'block' : 'none';
         if (coursesContent.style.display === 'block') loadCourses();
     });
-
-    function deleteCourse(id) {
-        if (confirm('Are you sure you want to delete this course?')) {
-            fetch(`/api/courses/${id}`, { method: 'DELETE' })
-                .then(() => loadCourses())
-                .catch(() => alert('Failed to delete course.'));
-        }
-    }
 
     addCourseBtn.addEventListener('click', () => {
         courseModal.style.display = 'flex';
@@ -55,26 +81,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     courseForm.addEventListener('submit', (event) => {
         event.preventDefault();
-
-        const name = document.getElementById('courseName').value.trim();
-        const credits = parseInt(document.getElementById('courseCredits').value.trim());
-        const teacherId = parseInt(document.getElementById('courseTeacher').value.trim());
-
-        if (!name || !credits || !teacherId) {
-            alert("All fields are required!");
-            return;
-        }
-
+        const fields = ['courseName', 'courseCredits', 'courseTeacher'];
+        let isValid = true;
+        fields.forEach(field => {
+            const input = document.getElementById(field);
+            if (input?.value.trim() === '') {
+                input.style.border = '2px solid red';
+                isValid = false;
+            } else {
+                input.style.border = '';
+            }
+        });
+        if (!isValid) return;
         fetch('/api/courses', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, credits, teacher: { id: teacherId } })
+            body: JSON.stringify({
+                name: document.getElementById('courseName').value.trim(),
+                credits: parseInt(document.getElementById('courseCredits').value.trim()),
+                teacher: { id: parseInt(document.getElementById('courseTeacher').value.trim()) }
+            })
         })
             .then(() => {
                 courseModal.style.display = 'none';
                 courseForm.reset();
-                loadCourses();
+                setTimeout(loadCourses, 300);
             })
-            .catch(() => alert('Failed to add course.'));
+            .catch(error => console.error('Eroare la adăugare curs:', error));
     });
 });
