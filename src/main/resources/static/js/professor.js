@@ -1,134 +1,138 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const viewProfessorsBtn = document.getElementById('view-professors-btn');
-    const professorsTable = document.getElementById('professors-table')?.getElementsByTagName('tbody')[0];
+    console.log('Page loaded, initializing scripts...');
+
+    const professorsTable = document.getElementById('professors-table').getElementsByTagName('tbody')[0];
     const addProfessorBtn = document.getElementById('add-professor-btn');
-    const professorModal = document.getElementById('professor-modal');
-    const closeProfessorModalBtn = professorModal?.querySelector('.close-btn');
-    const professorForm = document.getElementById('professor-form');
+    const viewProfessorsBtn = document.getElementById('view-professors-btn');
     const professorsContent = document.getElementById('professors-content');
-
-    // Creare și adăugare fereastră de confirmare în DOM
-    const confirmModal = document.createElement('div');
-    confirmModal.classList.add('modal');
-    confirmModal.style.display = 'none'; // Inițial ascuns
-    confirmModal.innerHTML = `
-        <div class="modal-content">
-            <h2 id="confirm-text">Ești sigur?</h2>
-            <button id="confirm-delete" class="modern-button">Confirmă</button>
-            <button id="cancel-delete" class="modern-button">Anulează</button>
-        </div>`;
-    document.body.appendChild(confirmModal);
-
-    // Obținem referințele butoanelor după ce au fost adăugate în DOM
-    const confirmDeleteBtn = document.getElementById('confirm-delete');
-    const cancelDeleteBtn = document.getElementById('cancel-delete');
-    const confirmText = document.getElementById('confirm-text');
+    const professorModal = document.getElementById('professor-modal');
+    const closeProfessorModalBtn = document.querySelector('#professor-modal .close-btn');
+    const professorForm = document.getElementById('professor-form');
 
     let deleteProfessorId = null;
 
+    // Create confirmation modal
+    const confirmModal = document.createElement('div');
+    confirmModal.classList.add('modal');
+    confirmModal.style.display = 'none';
+    confirmModal.innerHTML = `
+        <div class="modal-content">
+            <h2 id="confirm-text">Are you sure you want to delete this professor?</h2>
+            <button id="confirm-delete" class="modern-button">Confirm</button>
+            <button id="cancel-delete" class="modern-button">Cancel</button>
+        </div>`;
+    document.body.appendChild(confirmModal);
+
+    const confirmDeleteBtn = document.getElementById('confirm-delete');
+    const cancelDeleteBtn = document.getElementById('cancel-delete');
+
     function loadProfessors() {
+        console.log('Loading professors...');
         fetch('/api/professors')
             .then(response => response.json())
             .then(data => {
-                if (!professorsTable) return;
+                console.log('Professors loaded:', data);
                 professorsTable.innerHTML = '';
-
                 data.forEach(professor => {
                     const row = professorsTable.insertRow();
                     row.innerHTML = `
                         <td>${professor.id}</td>
                         <td>${professor.name}</td>
                         <td>${professor.email}</td>
-                        <td><button class="delete-btn" data-id="${professor.id}" data-name="${professor.name}">Șterge</button></td>
+                        <td><button class="delete-btn" data-id="${professor.id}" data-name="${professor.name}">Delete</button></td>
                     `;
                 });
+                professorsContent.style.display = 'block';
 
-                // Adăugare event listener pentru fiecare buton de ștergere
                 document.querySelectorAll('.delete-btn').forEach(button => {
-                    button.addEventListener('click', (e) => {
-                        const id = button.getAttribute('data-id');
-                        const name = button.getAttribute('data-name');
-                        showConfirmModal(id, name);
+                    button.addEventListener('click', (event) => {
+                        deleteProfessorId = event.target.getAttribute('data-id');
+                        const name = event.target.getAttribute('data-name') || 'Unknown Professor';
+                        console.log(`Delete button clicked for Professor ID: ${deleteProfessorId}, Name: ${name}`);
+                        showConfirmModal(name);
                     });
                 });
             })
-            .catch(error => console.error('Eroare la încărcarea profesorilor:', error));
+            .catch(error => console.error('Error loading professors:', error));
     }
 
-    function showConfirmModal(id, name) {
-        deleteProfessorId = id; // Salvăm ID-ul profesorului de șters
-        confirmText.innerText = `Ești sigur că vrei să-l ștergi pe profesorul ${name}?`;
+    function showConfirmModal(name) {
+        console.log(`Showing confirm modal for Professor: ${name}`);
+        document.getElementById('confirm-text').innerText = `Are you sure you want to delete Professor "${name}"?`;
         confirmModal.style.display = 'flex';
     }
 
-    confirmDeleteBtn.addEventListener('click', () => {
-        if (deleteProfessorId) {
+    document.body.addEventListener('click', (event) => {
+        if (event.target.id === 'confirm-delete' && deleteProfessorId) {
+            console.log(`Confirm delete clicked for Professor ID: ${deleteProfessorId}`);
             deleteProfessor(deleteProfessorId);
             deleteProfessorId = null;
+            confirmModal.style.display = 'none';
         }
-        confirmModal.style.display = 'none';
-    });
-
-    cancelDeleteBtn.addEventListener('click', () => {
-        confirmModal.style.display = 'none';
+        if (event.target.id === 'cancel-delete') {
+            console.log('Cancel delete clicked');
+            confirmModal.style.display = 'none';
+        }
     });
 
     function deleteProfessor(id) {
+        console.log(`Attempting to delete Professor ID: ${id}`);
         fetch(`/api/professors/${id}`, { method: 'DELETE' })
             .then(response => {
-                if (!response.ok) throw new Error('Eșec la ștergere');
-                return response.json();
+                if (!response.ok) throw new Error('Failed to delete');
+                console.log(`Professor ID: ${id} deleted successfully`);
+                return Promise.resolve();
             })
             .then(() => {
                 setTimeout(loadProfessors, 300);
             })
-            .catch(error => console.error('Eroare la ștergere:', error));
+            .catch(error => console.error('Error deleting professor:', error));
     }
 
-    viewProfessorsBtn?.addEventListener('click', () => {
-        if (!professorsContent) return;
-        professorsContent.style.display = professorsContent.style.display === 'none' ? 'block' : 'none';
-        if (professorsContent.style.display === 'block') loadProfessors();
-    });
-
-    addProfessorBtn?.addEventListener('click', () => {
+    addProfessorBtn.addEventListener('click', () => {
+        console.log('Add professor button clicked');
         professorModal.style.display = 'flex';
     });
 
-    closeProfessorModalBtn?.addEventListener('click', () => {
+    closeProfessorModalBtn.addEventListener('click', () => {
+        console.log('Close professor modal button clicked');
         professorModal.style.display = 'none';
     });
 
-    professorForm?.addEventListener('submit', (event) => {
+    professorForm.addEventListener('submit', (event) => {
         event.preventDefault();
-        const fields = ['professorName', 'professorEmail'];
-        let isValid = true;
 
-        fields.forEach(field => {
-            const input = document.getElementById(field);
-            if (input?.value.trim() === '') {
-                input.style.border = '2px solid red';
-                isValid = false;
-            } else {
-                input.style.border = '';
-            }
-        });
+        const professorName = document.getElementById('professorName').value.trim();
+        const professorEmail = document.getElementById('professorEmail').value.trim();
 
-        if (!isValid) return;
+        if (!professorName || !professorEmail) {
+            alert("Please fill in all fields correctly!");
+            return;
+        }
+
+        const professorData = { name: professorName, email: professorEmail };
+
+        console.log('Adding professor:', professorData);
 
         fetch('/api/professors', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name: document.getElementById('professorName').value.trim(),
-                email: document.getElementById('professorEmail').value.trim()
-            })
+            body: JSON.stringify(professorData)
         })
             .then(() => {
+                console.log('Professor added successfully');
                 professorModal.style.display = 'none';
                 professorForm.reset();
                 setTimeout(loadProfessors, 300);
             })
-            .catch(error => console.error('Eroare la adăugare profesor:', error));
+            .catch(error => console.error('Error adding professor:', error));
+    });
+
+    viewProfessorsBtn.addEventListener('click', () => {
+        console.log('View professors button clicked');
+        professorsContent.style.display = professorsContent.style.display === 'none' ? 'block' : 'none';
+        if (professorsContent.style.display === 'block') {
+            loadProfessors();
+        }
     });
 });

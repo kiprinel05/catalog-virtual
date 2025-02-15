@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td>${student.id}</td>
                         <td>${student.firstName} ${student.lastName}</td>
                         <td>${student.email}</td>
-                        <td><button class="delete-btn" data-id="${student.id}" data-name="${student.firstName} ${student.lastName}">Șterge</button></td>
+                        <td><button class="delete-btn" data-id="${student.id}" data-name="${student.firstName} ${student.lastName}">Delete</button></td>
                     `;
                     row.style.opacity = "0";
                     row.style.transform = "translateY(20px)";
@@ -46,15 +46,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 });
             })
-            .catch(error => console.error('Eroare la incarcarea studentilor:', error));
+            .catch(error => console.error('Error loading students:', error));
     }
 
     function showConfirmModal(id, name) {
         if (!name) {
-            console.error("Numele studentului este invalid sau lipsa!");
+            console.error("Student name is invalid or missing!");
             return;
         }
-        document.getElementById('confirm-text').innerText = `Esti sigur ca vrei sa-l stergi pe studentul ${name}?`;
+        document.getElementById('confirm-text').innerText = `Are you sure you want to delete student ${name}?`;
         confirmModal.style.display = 'flex';
 
         const confirmBtn = document.getElementById('confirm-delete');
@@ -72,14 +72,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function deleteStudent(id) {
         fetch(`/api/students/${id}`, { method: 'DELETE' })
             .then(response => {
-                if (!response.ok) throw new Error('Esec la stergere');
+                if (!response.ok) throw new Error('Failed to delete');
                 return response.json();
             })
             .then(() => {
                 studentForm.reset();
                 setTimeout(loadStudents, 300);
             })
-            .catch(error => console.error('Eroare la stergere:', error));
+            .catch(error => console.error('Error deleting student:', error));
     }
 
     viewStudentsBtn?.addEventListener('click', () => {
@@ -134,6 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 studentForm.reset();
                 setTimeout(loadStudents, 300);
             })
-            .catch(error => console.error('Eroare la adaugare student:', error));
+            .catch(error => console.error('Error adding student:', error));
     });
 });
