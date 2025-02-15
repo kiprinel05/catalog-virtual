@@ -6,21 +6,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeCourseModalBtn = document.querySelector('#course-modal .close-btn');
     const courseForm = document.getElementById('course-form');
     const coursesContent = document.getElementById('courses-content');
+
+    let deleteCourseId = null; // Stores the ID of the course to be deleted
+
+    // Create confirmation modal
     const confirmModal = document.createElement('div');
     confirmModal.classList.add('modal');
+    confirmModal.style.display = 'none'; // Ensure it starts hidden
     confirmModal.innerHTML = `
         <div class="modal-content">
-            <h2 id="confirm-text"></h2>
-            <button id="confirm-delete" class="modern-button">Confirmă</button>
-            <button id="cancel-delete" class="modern-button">Anulează</button>
+            <h2 id="confirm-text">Are you sure you want to delete this course?</h2>
+            <button id="confirm-delete" class="modern-button">Confirm</button>
+            <button id="cancel-delete" class="modern-button">Cancel</button>
         </div>`;
     document.body.appendChild(confirmModal);
+
+    const confirmDeleteBtn = document.getElementById('confirm-delete');
+    const cancelDeleteBtn = document.getElementById('cancel-delete');
 
     function loadCourses() {
         fetch('/api/courses')
             .then(response => response.json())
             .then(data => {
-                coursesTable.innerHTML = '';
+                coursesTable.innerHTML = ''; // Clear existing rows
                 data.forEach(course => {
                     const row = coursesTable.insertRow();
                     row.innerHTML = `
@@ -28,42 +36,49 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td>${course.name}</td>
                         <td>${course.credits}</td>
                         <td>${course.teacher ? course.teacher.name : 'N/A'}</td>
-                        <td><button class="delete-btn" data-id="${course.id}" data-name="${course.name}">Șterge</button></td>
+                        <td><button class="delete-btn" data-id="${course.id}" data-name="${course.name || 'N/A'}">Delete</button></td>
                     `;
                 });
+
+                // Attach event listeners for delete buttons
                 document.querySelectorAll('.delete-btn').forEach(button => {
-                    button.addEventListener('click', () => {
-                        const id = button.getAttribute('data-id');
-                        const name = button.getAttribute('data-name');
-                        showConfirmModal(id, name);
+                    button.addEventListener('click', (event) => {
+                        deleteCourseId = event.target.getAttribute('data-id'); // Store ID
+                        const name = event.target.getAttribute('data-name') || 'Unknown Course';
+                        showConfirmModal(name);
                     });
                 });
             })
-            .catch(error => console.error('Eroare la încărcarea cursurilor:', error));
+            .catch(error => console.error('Error loading courses:', error));
     }
 
-    function showConfirmModal(id, name) {
-        document.getElementById('confirm-text').innerText = `Ești sigur că vrei să ștergi cursul ${name}?`;
+    function showConfirmModal(name) {
+        document.getElementById('confirm-text').innerText = `Are you sure you want to delete the course "${name}"?`;
         confirmModal.style.display = 'flex';
-        document.getElementById('confirm-delete').onclick = () => {
-            deleteCourse(id);
-            confirmModal.style.display = 'none';
-        };
-        document.getElementById('cancel-delete').onclick = () => {
-            confirmModal.style.display = 'none';
-        };
     }
+
+    // Ensure event listeners are correctly attached
+    document.body.addEventListener('click', (event) => {
+        if (event.target.id === 'confirm-delete' && deleteCourseId) {
+            deleteCourse(deleteCourseId);
+            deleteCourseId = null;
+            confirmModal.style.display = 'none';
+        }
+        if (event.target.id === 'cancel-delete') {
+            confirmModal.style.display = 'none';
+        }
+    });
 
     function deleteCourse(id) {
         fetch(`/api/courses/${id}`, { method: 'DELETE' })
             .then(response => {
-                if (!response.ok) throw new Error('Eșec la ștergere');
-                return response.json();
+                if (!response.ok) throw new Error('Failed to delete');
+                return Promise.resolve();
             })
             .then(() => {
                 setTimeout(loadCourses, 300);
             })
-            .catch(error => console.error('Eroare la ștergere:', error));
+            .catch(error => console.error('Error deleting course:', error));
     }
 
     viewCoursesBtn.addEventListener('click', () => {
@@ -81,32 +96,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     courseForm.addEventListener('submit', (event) => {
         event.preventDefault();
-        const fields = ['courseName', 'courseCredits', 'courseTeacher'];
-        let isValid = true;
-        fields.forEach(field => {
-            const input = document.getElementById(field);
-            if (input?.value.trim() === '') {
-                input.style.border = '2px solid red';
-                isValid = false;
-            } else {
-                input.style.border = '';
-            }
-        });
-        if (!isValid) return;
+
+        const courseName = document.getElementById('courseName').value.trim();
+        const courseCredits = parseInt(document.getElementById('courseCredits').value.trim());
+        const teacherId = document.getElementById('courseTeacher').value.trim();
+
+        if (!courseName || isNaN(courseCredits) || courseCredits <= 0) {
+            alert("Please fill in all fields correctly!");
+            return;
+        }
+
+        const courseData = { name: courseName, credits: courseCredits };
+
+        if (teacherId) {
+            courseData.teacher = { id: parseInt(teacherId) };
+        }
+
         fetch('/api/courses', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name: document.getElementById('courseName').value.trim(),
-                credits: parseInt(document.getElementById('courseCredits').value.trim()),
-                teacher: { id: parseInt(document.getElementById('courseTeacher').value.trim()) }
-            })
+            body: JSON.stringify(courseData)
         })
             .then(() => {
                 courseModal.style.display = 'none';
                 courseForm.reset();
                 setTimeout(loadCourses, 300);
             })
-            .catch(error => console.error('Eroare la adăugare curs:', error));
+            .catch(error => console.error('Error adding course:', error));
     });
 });

@@ -1,7 +1,7 @@
 package com.faculty.catalog.controllers;
 
-import com.faculty.catalog.models.Class;
-import com.faculty.catalog.repositories.ClassRepository;
+import com.faculty.catalog.models.Course;
+import com.faculty.catalog.repositories.CourseRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,21 +11,21 @@ import java.util.List;
 @RequestMapping("/api/courses")
 @CrossOrigin(origins = "*")
 public class CourseController {
-    private final ClassRepository classRepository;
+    private final CourseRepository courseRepository;
 
-    public CourseController(ClassRepository classRepository) {
-        this.classRepository = classRepository;
+    public CourseController(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
     }
 
     @GetMapping
-    public List<Class> getAllCourses() {
-        return classRepository.findAll();
+    public List<Course> getAllCourses() {
+        return courseRepository.findAll();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCourse(@PathVariable Long id) {
-        if (classRepository.existsById(id)) {
-            classRepository.deleteById(id);
+        if (courseRepository.existsById(id)) {
+            courseRepository.deleteById(id);
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
@@ -33,12 +33,12 @@ public class CourseController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addCourse(@RequestBody Class course) {
-        if (course.getname() == null || course.getCredits() <= 0) {
+    public ResponseEntity<?> addCourse(@RequestBody Course course) {
+        if (course.getName() == null || course.getCredits() <= 0) {
             return ResponseEntity.badRequest().body("Missing required fields");
         }
 
-        Class savedCourse = classRepository.save(course);
+        Course savedCourse = courseRepository.save(course);
         return ResponseEntity.ok(savedCourse);
     }
 }
