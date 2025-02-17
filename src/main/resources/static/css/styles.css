@@ -9,6 +9,7 @@
 body {
     font-family: "Rubik", sans-serif;
     background-color: #f4f4f4;
+    background-size: cover;
 }
 
 /* Header */
@@ -16,7 +17,7 @@ header {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    background-color: #22223B;
+    background-color: #252323;
     color: white;
     padding: 15px;
     text-align: center;
@@ -33,7 +34,7 @@ header h1.modern-title {
 
 .modern-button {
     background-color: #F2E9E4;
-    color: #22223B;
+    color: #252323;
     border: none;
     padding: 8px 18px;
     margin: 5px;
@@ -44,7 +45,7 @@ header h1.modern-title {
 }
 
 .modern-button:hover {
-    background-color: #4A4E69;
+    background-color: #2F2E31;
     color: white;
     transform: scale(1.08);
 }
@@ -68,7 +69,7 @@ header h1.modern-title {
 }
 
 .modern-table th {
-    background-color: #4A4E69;
+    background-color: #2F2E31;
     color: #F2E9E4;
 }
 
@@ -137,7 +138,7 @@ tbody tr {
 
 .modal-content h2 {
     font-size: 22px;
-    color: #4A4E69;
+    color: #2F2E31;
     margin-bottom: 15px;
 }
 
@@ -152,7 +153,7 @@ tbody tr {
 
 .modal-content input:focus {
     outline: none;
-    border-color: #4A4E69;
+    border-color: #2F2E31;
     box-shadow: 0 0 5px rgba(74, 78, 105, 0.5);
 }
 
@@ -162,7 +163,7 @@ tbody tr {
     margin-top: 10px;
     border: none;
     border-radius: 8px;
-    background-color: #4A4E69;
+    background-color: #2F2E31;
     color: white;
     font-size: 16px;
     cursor: pointer;
@@ -170,7 +171,7 @@ tbody tr {
 }
 
 .modal-content button:hover {
-    background-color: #22223B;
+    background-color: #252323;
     transform: scale(1.05);
 }
 
@@ -185,7 +186,7 @@ tbody tr {
 }
 
 .close-btn:hover {
-    color: #22223B;
+    color: #252323;
 }
 
 @keyframes fadeIn {

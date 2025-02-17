@@ -9,5 +9,4 @@ public class CatalogVirtualApplication {
     public static void main(String[] args) {
         SpringApplication.run(CatalogVirtualApplication.class, args);
     }
-
 }

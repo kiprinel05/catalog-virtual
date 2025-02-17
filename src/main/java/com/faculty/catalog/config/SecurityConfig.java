@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
 @Configuration
@@ -29,12 +28,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Dezactivează CSRF dacă nu e necesar momentan
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // Permite accesul la toate paginile fără autentificare
+                        .requestMatchers("/login", "/api/auth/login", "/api/auth/logout").permitAll() // Login și logout sunt publice
+                        .requestMatchers("/api/admin/**").authenticated() // Protejăm această zonă
+                        .anyRequest().permitAll()
                 )
-                .formLogin(form -> form.disable()) // Dezactivează complet login-ul
-                .logout(logout -> logout.disable()); // Dezactivează logout-ul
+                .formLogin(form -> form
+                        .loginPage("/login") // Pagină de login
+                        .loginProcessingUrl("/api/auth/login") // Unde sunt trimise datele de login
+                        .defaultSuccessUrl("/dashboard", true) // Redirecționare după login
+                        .failureUrl("/login?error=true")
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/api/auth/logout")
+                        .logoutSuccessUrl("/login?logout=true")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
 
         return http.build();
     }
