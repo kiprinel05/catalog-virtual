@@ -36,18 +36,24 @@ header h1.modern-title {
     background-color: #F2E9E4;
     color: #252323;
     border: none;
-    padding: 8px 18px;
-    margin: 5px;
+    padding: 12px 20px;
+    margin: 8px;
     cursor: pointer;
-    border-radius: 20px;
+    border-radius: 25px;
     font-family: "Rubik", sans-serif;
+    font-size: 16px;
     transition: transform 0.2s ease, background-color 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .modern-button:hover {
     background-color: #2F2E31;
     color: white;
-    transform: scale(1.08);
+    transform: scale(1.05);
+}
+
+.modern-button:active {
+    transform: scale(0.98);
 }
 
 #content {
@@ -232,4 +238,32 @@ tbody tr {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: 20px auto;
+    gap: 20px;
+}
+
+.left-panel {
+    flex: 3;
+    /* 60% din ecran */
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    min-height: 500px;
+}
+
+.right-panel {
+    flex: 2;
+    /* 40% din ecran */
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    min-height: 500px;
 }
