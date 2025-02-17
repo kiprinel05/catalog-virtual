@@ -30,19 +30,22 @@ document.addEventListener("DOMContentLoaded", () => {
             gradesTable.innerHTML = "";
             students.forEach(student => {
                 const studentGrade = grades.find(g => g.student.id === student.id);
+                const gradeValue = studentGrade ? studentGrade.grade : "No grade";
+                const gradeColor = studentGrade && studentGrade.grade < 5 ? 'style="color: red; font-weight: bold;"' : '';
+
                 const row = gradesTable.insertRow();
                 row.innerHTML = `
-                    <td>${student.firstName} ${student.lastName}</td>
-                    <td>${studentGrade ? studentGrade.grade : "No grade"}</td>
-                    <td>
-                        ${studentGrade ?
-                    `<button class="edit-btn" data-id="${studentGrade.id}" data-grade="${studentGrade.grade}">Edit</button>
-                            <button class="delete-btn" data-id="${studentGrade.id}">Delete</button>`
-                    :
-                    `<button class="add-grade-btn" data-student-id="${student.id}" data-course-id="${courseId}">Add Grade</button>`
-                }
-                    </td>
-                `;
+                <td>${student.firstName} ${student.lastName}</td>
+                <td ${gradeColor}>${gradeValue}</td>
+                <td>
+                    ${studentGrade ? `
+                        <button class="edit-btn" data-id="${studentGrade.id}" data-grade="${studentGrade.grade}">Edit</button>
+                        <button class="delete-btn" data-id="${studentGrade.id}">Delete</button>
+                    ` : `
+                        <button class="add-grade-btn" data-student-id="${student.id}" data-course-id="${courseId}">Add Grade</button>
+                    `}
+                </td>
+            `;
             });
             attachEventListeners();
         });

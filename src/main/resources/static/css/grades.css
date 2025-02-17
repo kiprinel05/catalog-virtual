@@ -128,3 +128,16 @@ input {
 #grades-table tr:hover {
     background-color: #ddd;
 }
+
+.textselect {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.grades-title {
+    margin-bottom: 10px;
+    font-size: 30px;
+}

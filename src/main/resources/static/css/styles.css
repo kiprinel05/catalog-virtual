@@ -8,7 +8,8 @@
 
 body {
     font-family: "Rubik", sans-serif;
-    background-color: #f4f4f4;
+    background-size: cover;
+    background-image: url('../images/bg.png');
     background-size: cover;
 }
 
