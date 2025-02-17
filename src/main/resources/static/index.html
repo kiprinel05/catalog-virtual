@@ -13,7 +13,6 @@
 </header>
 
 <div class="container">
-    <!-- Secțiunea stângă pentru studenți, cursuri și profesori -->
     <div class="left-panel">
         <nav>
             <button id="show-students-btn" class="modern-button">Show Students</button>
@@ -23,9 +22,92 @@
             <button id="view-professors-btn" class="modern-button">View Professors</button>
             <button id="add-professor-btn" class="modern-button">Add Professor</button>
         </nav>
+        <div id="students-content" style="display: none;">
+            <h2>Students</h2>
+            <table id="students-table" class="modern-table">
+                <thead>
+                <tr>
+                    <th style="max-width: 5px;">ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th style="max-width: 30px;">Delete</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div id="courses-content" style="display: none;">
+            <h2>Courses</h2>
+            <table id="courses-table" class="modern-table">
+                <thead>
+                <tr>
+                    <th style="max-width: 5px;">ID</th>
+                    <th>Name</th>
+                    <th>Credits</th>
+                    <th>Professor</th>
+                    <th style="max-width: 30px;">Delete</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div id="professors-content" style="display: none;">
+            <h2>Professors</h2>
+            <table id="professors-table" class="modern-table">
+                <thead>
+                <tr>
+                    <th style="max-width: 5px;">ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th style="max-width: 30px;">Delete</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div id="student-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Add Student</h2>
+                <form id="student-form">
+                    <input type="text" id="firstName" placeholder="First Name" required>
+                    <input type="text" id="lastName" placeholder="Last Name" required>
+                    <input type="email" id="email" placeholder="Email" required>
+                    <input type="password" id="password" placeholder="Password" required>
+                    <input type="number" id="studyYear" placeholder="Study Year" required>
+                    <input type="text" id="subgroup" placeholder="Subgroup" required>
+                    <button type="submit" class="modern-button">Add Student</button>
+                </form>
+            </div>
+        </div>
+        <div id="professor-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Add Professor</h2>
+                <form id="professor-form">
+                    <input type="text" id="professorName" placeholder="Professor Name" required>
+                    <input type="email" id="professorEmail" placeholder="Email" required>
+                    <button type="submit" class="modern-button">Add Professor</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="course-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Add Course</h2>
+            <form id="course-form">
+                <input type="text" id="courseName" placeholder="Course Name" required>
+                <input type="number" id="courseCredits" placeholder="Credits" required>
+                <input type="number" id="courseTeacher" placeholder="Professor ID" required>
+                <button type="submit" class="modern-button">Add Course</button>
+            </form>
+        </div>
     </div>
 
-    <!-- Secțiunea dreaptă pentru note (vizibilă mereu) -->
+
+    <!--    GRADES-->
     <div class="right-panel">
         <h2>Grades</h2>
         <label for="course-selector">Select Course:</label>
@@ -44,7 +126,6 @@
     </div>
 </div>
 
-<!-- Modal pentru Edit Grade -->
 <div id="edit-modal" class="modal">
     <div class="modal-content">
         <h2>Edit Grade</h2>
@@ -54,7 +135,6 @@
     </div>
 </div>
 
-<!-- Modal pentru Add Grade -->
 <div id="add-modal" class="modal">
     <div class="modal-content">
         <h2>Add Grade</h2>
@@ -64,7 +144,6 @@
     </div>
 </div>
 
-<!-- Modal pentru Confirmare Delete -->
 <div id="delete-modal" class="modal">
     <div class="modal-content">
         <h2>Confirm Delete</h2>
@@ -75,9 +154,9 @@
 </div>
 
 
-<script src="js/student.js"></script>
-<script src="js/professor.js"></script>
-<script src="js/course.js"></script>
-<script src="js/grades.js"></script>
 </body>
+<script src="js/student.js" defer></script>
+<script src="js/professor.js" defer></script>
+<script src="js/course.js" defer></script>
+<script src="js/grades.js" defer></script>
 </html>
