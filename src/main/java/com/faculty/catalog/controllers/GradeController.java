@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/grades")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "origins = \"http://localhost:8080\"")
 public class GradeController {
     private final GradeRepository gradeRepository;
 
@@ -43,4 +43,6 @@ public class GradeController {
         }
         return ResponseEntity.notFound().build();
     }
+
+
 }

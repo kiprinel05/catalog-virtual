@@ -5,10 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class LoginController {
-    @GetMapping("/login")
-    public String showLoginPage() {
-        return "login"; // Se va afișa pagina login.html din templates
-    }
 
-    
+    @GetMapping("/custom-login") // Evităm conflictul cu Spring Security
+    public String showLoginPage() {
+        return "login"; // Se referă la login.html
+    }
 }

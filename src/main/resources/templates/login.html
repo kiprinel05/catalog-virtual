@@ -6,12 +6,13 @@
 <body>
 <h2>Login</h2>
 <form th:action="@{/api/auth/login}" method="post">
-    <label>Username: <input type="text" name="username"/></label><br/>
-    <label>Password: <input type="password" name="password"/></label><br/>
+    <label>Username:</label>
+    <input type="text" name="username" required>
+    <br>
+    <label>Password:</label>
+    <input type="password" name="password" required>
+    <br>
     <button type="submit">Login</button>
 </form>
-
-<p th:if="${param.error}">Invalid username or password.</p>
-<p th:if="${param.logout}">You have been logged out.</p>
 </body>
 </html>
