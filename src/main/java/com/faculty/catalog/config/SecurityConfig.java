@@ -32,31 +32,29 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())  // Dezactivăm CSRF pentru că folosim JWT
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/api/auth/login", "/api/auth/logout", "/register").permitAll()
-                        .requestMatchers("/dashboard").authenticated()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/professor/**").hasRole("TEACHER")
-                        .requestMatchers("/api/student/**").hasRole("STUDENT")
+                        .requestMatchers("/", "/login.html", "/api/auth/login", "/register", "/login.js", "/css/**", "/js/**").permitAll()
+                        // Allow access to login.html
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")  // Spring Security va folosi login.html automat
-                        .loginProcessingUrl("/api/auth/login") // Unde sunt trimise datele de login
-                        .successForwardUrl("/dashboard")  // Evită redirect-loop
-                        .failureUrl("/login?error=true")  // Dacă login-ul eșuează
+                        .loginPage("/login.html") // Redirect to static login.html
+                        .loginProcessingUrl("/api/auth/login")
+                        .defaultSuccessUrl("/index.html", true)
+                        .failureUrl("/login.html?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/api/auth/logout")
-                        .logoutSuccessUrl("/login?logout=true")  // Redirecționează la login după logout
+                        .logoutSuccessUrl("/login.html?logout=true")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll()
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Folosim JWT în loc de sesiuni
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // Adăugăm filtrul JWT
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
 
         return http.build();
     }
