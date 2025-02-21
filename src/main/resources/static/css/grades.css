@@ -62,7 +62,6 @@ input {
 
 .left-panel {
     flex: 3;
-    /* 60% din ecran */
     background-color: #ffffff;
     padding: 25px;
     border-radius: 12px;
@@ -72,7 +71,6 @@ input {
 
 .right-panel {
     flex: 2;
-    /* 40% din ecran */
     background-color: #ffffff;
     padding: 25px;
     border-radius: 12px;

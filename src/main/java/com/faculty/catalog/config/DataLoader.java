@@ -25,7 +25,7 @@ public class DataLoader {
             if (adminRepository.findByUsername("admin").isEmpty()) {
                 Admin admin = new Admin();
                 admin.setUsername("admin");
-                admin.setPassword(passwordEncoder.encode("password")); // ✅ Correctly hashed password
+                admin.setPassword(passwordEncoder.encode("password"));
                 adminRepository.save(admin);
                 System.out.println("✅ Admin created with username: admin and password: password");
             } else {

@@ -14,7 +14,6 @@ public class JwtUtil {
 
     private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
-    // Generare token JWT
     public String generateToken(String username, String role) {
         return Jwts.builder()
                 .setSubject(username)
@@ -25,7 +24,6 @@ public class JwtUtil {
                 .compact();
     }
 
-    // Extrage username-ul din token
     public String extractUsername(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -35,7 +33,6 @@ public class JwtUtil {
                 .getSubject();
     }
 
-    // Extrage rolul din token
     public String extractRole(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -45,7 +42,6 @@ public class JwtUtil {
                 .get("role", String.class);
     }
 
-    // Validează token-ul
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()

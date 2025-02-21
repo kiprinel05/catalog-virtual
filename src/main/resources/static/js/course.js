@@ -7,12 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const courseForm = document.getElementById('course-form');
     const coursesContent = document.getElementById('courses-content');
 
-    let deleteCourseId = null; // Stores the ID of the course to be deleted
+    let deleteCourseId = null;
 
     // Create confirmation modal
     const confirmModal = document.createElement('div');
     confirmModal.classList.add('modal');
-    confirmModal.style.display = 'none'; // Ensure it starts hidden
+    confirmModal.style.display = 'none';
     confirmModal.innerHTML = `
         <div class="modal-content">
             <h2 id="confirm-text">Are you sure you want to delete this course?</h2>
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('/api/courses')
             .then(response => response.json())
             .then(data => {
-                coursesTable.innerHTML = ''; // Clear existing rows
+                coursesTable.innerHTML = '';
                 data.forEach(course => {
                     const row = coursesTable.insertRow();
                     row.innerHTML = `
@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                 });
 
-                // Attach event listeners for delete buttons
                 document.querySelectorAll('.delete-btn').forEach(button => {
                     button.addEventListener('click', (event) => {
                         deleteCourseId = event.target.getAttribute('data-id'); // Store ID
@@ -57,7 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
         confirmModal.style.display = 'flex';
     }
 
-    // Ensure event listeners are correctly attached
     document.body.addEventListener('click', (event) => {
         if (event.target.id === 'confirm-delete' && deleteCourseId) {
             deleteCourse(deleteCourseId);

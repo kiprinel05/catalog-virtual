@@ -13,6 +13,6 @@ public class LoginController {
     @GetMapping("/custom-login")
     public String showLoginPage() {
         logger.info("Accessing /custom-login");
-        return "login"; // Ensure you have `login.html` inside `src/main/resources/templates/`
+        return "login";
     }
 }

@@ -25,7 +25,7 @@ public class User implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
-    private List<String> roles; // Poate avea mai multe roluri (ex: ["ROLE_STUDENT", "ROLE_PROFESSOR"])
+    private List<String> roles;
 
     public User() {}
 

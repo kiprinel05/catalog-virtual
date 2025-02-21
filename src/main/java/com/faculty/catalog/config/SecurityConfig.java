@@ -10,7 +10,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -29,35 +28,49 @@ public class SecurityConfig {
         this.jwtFilter = jwtFilter;
     }
 
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .csrf(csrf -> csrf.disable())
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/", "/login.html", "/api/auth/login", "/index.html", "/login.js", "/css/**", "/js/**").permitAll()
+//                        .anyRequest().authenticated()
+//                )
+//                .formLogin(form -> form
+//                        .loginPage("/login.html") // Redirect to static login.html
+//                        .loginProcessingUrl("/api/auth/login")
+//                        .defaultSuccessUrl("/index.html", true)
+//                        .failureUrl("/login.html?error=true")
+//                        .permitAll()
+//                )
+//                .logout(logout -> logout
+//                        .logoutUrl("/api/auth/logout")
+//                        .logoutSuccessUrl("/login.html?logout=true")
+//                        .invalidateHttpSession(true)
+//                        .deleteCookies("JSESSIONID")
+//                        .permitAll()
+//                )
+//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+//
+//
+//        return http.build();
+//    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login.html", "/api/auth/login", "/register", "/login.js", "/css/**", "/js/**").permitAll()
-                        // Allow access to login.html
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
-                .formLogin(form -> form
-                        .loginPage("/login.html") // Redirect to static login.html
-                        .loginProcessingUrl("/api/auth/login")
-                        .defaultSuccessUrl("/index.html", true)
-                        .failureUrl("/login.html?error=true")
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/api/auth/logout")
-                        .logoutSuccessUrl("/login.html?logout=true")
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                        .permitAll()
-                )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
+                .formLogin(form -> form.disable())
+                .logout(logout -> logout.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }
+
 
     @Bean
     public AuthenticationProvider authenticationProvider() {

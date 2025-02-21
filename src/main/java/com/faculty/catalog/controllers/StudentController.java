@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/students")
-@CrossOrigin(origins = "*") // Permite accesul de la orice frontend
+@CrossOrigin(origins = "*")
 public class StudentController {
     private final StudentRepository studentRepository;
 
@@ -27,7 +27,7 @@ public class StudentController {
     public ResponseEntity<?> deleteStudent(@PathVariable Long id) {
         if (studentRepository.existsById(id)) {
             studentRepository.deleteById(id);
-            return ResponseEntity.noContent().build(); // 204 No Content, mai potrivit decât 200 OK
+            return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
         }
