@@ -1,84 +1,76 @@
-# Virtual Catalog for Faculty of Computer Science
+# 🎓 Virtual Catalog for Faculty of Computer Science
 
-This is a **virtual catalog** for a Faculty of Computer Science, built using **Spring Boot**, **HTML**, **CSS**, **JavaScript**, and **PostgreSQL**. The project is still in development, and several features are yet to be added or refined.
+This **📚 virtual catalog** is designed for managing students, courses, and professors in a Faculty of Computer Science. Built with **🚀 Spring Boot**, **🎨 HTML, CSS, JavaScript**, and **🐘 PostgreSQL**, it is currently **a work in progress**, with exciting features on the way!
 
-## Features
+## 🎥 Presentation Video
 
-- **User Authentication**: Login functionality using username and password.
-- **Student Management**: View, add, and delete students.
-- **Course Management**: Manage courses.
-- **Professor Management**: Manage professors.
-- **Database Integration**: PostgreSQL is used for data storage.
-- **Frontend**: Simple frontend using HTML, CSS, and JavaScript for interacting with the backend API.
 
-## Technologies Used
+https://github.com/user-attachments/assets/e231f3eb-9e99-4332-b16c-0e932edb1cde
 
-- **Spring Boot**: Backend framework.
-- **Spring Security**: For user authentication and authorization.
-- **PostgreSQL**: Database management system.
-- **HTML/CSS/JavaScript**: Frontend technologies for creating the user interface.
-- **Maven**: For dependency management.
-- **IntelliJ IDEA**: IDE used for development.
 
-## Installation
 
-### Prerequisites
+## ✨ Features
 
-Make sure you have the following installed on your machine:
-- Java 11 or higher
-- PostgreSQL
-- IntelliJ IDEA (or any IDE of your choice)
-- Maven
+- 🔐 **User Authentication**: Secure login system.
+- 👨‍🎓 **Student Management**: View, add, and delete students.
+- 🏫 **Course & Professor Management**: Organize academic courses and faculty.
+- 🗄️ **Database Integration**: Uses PostgreSQL for efficient data storage.
+- 🎭 **Simple & Interactive Frontend**: Built with HTML, CSS, and JavaScript.
 
-### Steps to Run the Application
+## 🛠️ Technologies Used
 
+- **🖥️ Spring Boot** – Backend framework
+- **🛡️ Spring Security** – Authentication & authorization
+- **🐘 PostgreSQL** – Database management
+- **🎨 HTML, CSS, JavaScript** – Frontend technologies
+- **🧩 Maven** – Dependency management
+- **💡 IntelliJ IDEA** – Development environment
+
+## ⚙️ Installation
+
+### 📌 Prerequisites
+- ☕ Java 11 or higher
+- 🐘 PostgreSQL
+- 💻 IntelliJ IDEA (or another IDE)
+- 🔧 Maven
+
+### 🚀 Setup & Run
 1. Clone the repository:
-
    ```bash
    git clone https://github.com/kiprinel05/catalog-virtual.git
-   ```
-
-2. Navigate to the project directory:
-   ```bash
    cd catalog-virtual
    ```
+2. Configure the PostgreSQL database:
+   - 🏗️ Create a database (e.g., `catalog_virtual`).
+   - Update `application.properties` with your credentials:
+   ```bash
+   spring.datasource.url=jdbc:postgresql://localhost:5432/catalog_virtual
+   spring.datasource.username=yourusername
+   spring.datasource.password=yourpassword
+   spring.jpa.hibernate.ddl-auto=update
+   spring.datasource.driver-class-name=org.postgresql.Driver
+   ```
+3. Build and run the application:
+   ```bash
+   mvn spring-boot:run
+   ```
+4. 🎯 Access the application at `http://localhost:8080`.
+   - 🔑 Default login: **admin / admin**
 
-3. Set up your PostgreSQL database:
+## 🚧 Development Status
+- ✅ Basic functionalities (student, course, and professor management) are implemented.
+- 🔄 User authentication is in place but needs improvements.
+- 🎨 The frontend is in its early stages and will be expanded.
 
- * Create a new database in PostgreSQL (e.g., catalog-virtual).
- * Update the database credentials in src/main/resources/application.properties.
- * Example application.properties:
-  ```bash
-  spring.datasource.url=jdbc:postgresql://localhost:5432/virtual_catalog
-  spring.datasource.username=yourusername
-  spring.datasource.password=yourpassword
-  spring.jpa.hibernate.ddl-auto=update
-  spring.datasource.driver-class-name=org.postgresql.Driver
-  ```
+## 📅 Roadmap
+- 🔑 Implement role-based access control (Admin, Professor, Student).
+- 🔐 Improve password security and encryption.
+- 🎭 Expand frontend with a more user-friendly interface.
+- ⚡ Optimize database performance.
 
-4. Build the project
-   
-6. Run the application
-   
-7. Access the application at http://localhost:8080.
-* Login with the credentials:
-    - Username: admin
-    - Password: admin
+## 🙌 Acknowledgments
+- **🚀 Spring Boot** for backend development
+- **🐘 PostgreSQL** for database management
+- **🎨 HTML, CSS, JavaScript** for frontend design
+- **🧩 Maven** for dependency management
 
-## Current State
-- The project is in development.
-- Basic functionalities (student, course, and professor management) are implemented.
-- User authentication is set up but can be expanded for more advanced use cases.
-- Frontend is in the initial stage and can be improved.
-
-## TODO
-- Add advanced user roles (e.g., Admin, Professor, Student).
-- Implement proper password encryption.
-- Extend frontend with more detailed pages and features.
-- Optimize database schema and improve performance.
-
-## Acknowledgments
-- Spring Boot for the backend framework.
-- PostgreSQL for the database system.
-- HTML/CSS/JavaScript for the frontend development.
-- Maven for dependency management.
